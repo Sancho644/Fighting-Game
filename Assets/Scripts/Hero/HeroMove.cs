@@ -1,4 +1,4 @@
-﻿using Infrastructure;
+﻿using Infrastructure.Services;
 using Services.Input;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace Hero
 
         private void Awake()
         {
-            _inputService = Game.InputService;
+            _inputService = AllServices.Container.Single<IInputService>();
         }
 
         private void Start()
