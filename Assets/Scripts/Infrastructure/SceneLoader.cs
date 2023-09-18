@@ -9,10 +9,10 @@ namespace Infrastructure
     {
         private readonly ICoroutineRunner _coroutineRunner;
 
-        public SceneLoader(ICoroutineRunner coroutineRunner) => 
+        public SceneLoader(ICoroutineRunner coroutineRunner) =>
             _coroutineRunner = coroutineRunner;
 
-        public void Load(string name, Action onLoaded = null) => 
+        public void Load(string name, Action onLoaded = null) =>
             _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
 
         private IEnumerator LoadScene(string nextScene, Action onLoaded = null)
@@ -20,14 +20,14 @@ namespace Infrastructure
             if (SceneManager.GetActiveScene().name == nextScene)
             {
                 onLoaded?.Invoke();
-                yield break;;
+                yield break;
             }
-            
+
             AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
 
             while (!waitNextScene.isDone)
-                yield return null; 
-                
+                yield return null;
+
             onLoaded?.Invoke();
         }
     }
