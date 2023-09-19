@@ -992,7 +992,10 @@ GameObject:
   - component: {fileID: 4385654540860092144}
   - component: {fileID: 2724875660564263810}
   - component: {fileID: 9161338052623788537}
-  m_Layer: 0
+  - component: {fileID: 4841949793330905970}
+  - component: {fileID: 4041088098889829371}
+  - component: {fileID: 6087198617366573497}
+  m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1113,6 +1116,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 1852958260541086296}
   _movementSpeed: 4
+--- !u!114 &4841949793330905970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782702501690864755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca795c25e03431e831b53785c62314b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroAnimator: {fileID: 2724875660564263810}
+--- !u!114 &4041088098889829371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782702501690864755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fead7be2c9884e4ab64cc4afc163ef49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 2724875660564263810}
+  _characterController: {fileID: 1852958260541086296}
+--- !u!114 &6087198617366573497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782702501690864755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e58a7614d584156a584c008dff6a248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 4841949793330905970}
+  _heroMove: {fileID: 9161338052623788537}
+  _heroAttack: {fileID: 4041088098889829371}
+  _animator: {fileID: 2724875660564263810}
+  _deathFx: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
 --- !u!1 &1789272960074739661
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,9 @@
 ﻿using CameraLogic;
+using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
+using UI;
 using UnityEngine;
 
 namespace Infrastructure.States
@@ -16,7 +18,8 @@ namespace Infrastructure.States
         private readonly IGameFactory _gameFactory;
         private readonly IPersistentProgressService _progressService;
 
-        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain curtain, IGameFactory gameFactory, IPersistentProgressService progressService)
+        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain curtain,
+            IGameFactory gameFactory, IPersistentProgressService progressService)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
@@ -32,7 +35,7 @@ namespace Infrastructure.States
             _sceneLoader.Load(sceneName, OnLoaded);
         }
 
-        public void Exit() => 
+        public void Exit() =>
             _curtain.Hide();
 
         private void OnLoaded()
@@ -53,12 +56,20 @@ namespace Infrastructure.States
         {
             GameObject hero = _gameFactory.CreateHero(GameObject.FindWithTag(InitialPointTag));
 
-            _gameFactory.CreateHud();
+            InitHud(hero);
 
             CameraFollow(hero);
         }
 
-        private void CameraFollow(GameObject hero) => 
+        private void InitHud(GameObject hero)
+        {
+            GameObject hud = _gameFactory.CreateHud();
+
+            hud.GetComponentInChildren<ActorUI>()
+                .Construct(hero.GetComponent<HeroHealth>());
+        }
+
+        private void CameraFollow(GameObject hero) =>
             Camera.main.GetComponent<CameraFollow>().Follow(hero);
     }
 }
