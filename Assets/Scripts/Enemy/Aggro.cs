@@ -20,6 +20,13 @@ namespace Enemy
             SwitchFollowOff();
         }
 
+        public void DisableAggro()
+        {
+            _triggerObserver.gameObject.SetActive(false);
+
+            SwitchFollowOff();
+        }
+
         private void TriggerEnter(Collider obj)
         {
             if (!_hasAggroTarget)

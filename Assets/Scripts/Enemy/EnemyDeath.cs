@@ -9,6 +9,7 @@ namespace Enemy
     {
         [SerializeField] private EnemyHealth _health;
         [SerializeField] private EnemyAnimator _animator;
+        [SerializeField] private Aggro _aggro;
         [SerializeField] private float _deathCooldown = 3f;
         [SerializeField] private GameObject _deathFx;
 
@@ -34,6 +35,7 @@ namespace Enemy
         {
             _health.HealthChanged -= HealthChanged;
 
+            _aggro.DisableAggro();
             _animator.PlayDeath();
 
             SpawnDeathFx();

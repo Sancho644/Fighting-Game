@@ -634,7 +634,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5476734514171880765, guid: 39e701719152d6442a8c383c90d920ba, type: 3}
       propertyPath: button.m_key
-      value: Fire1
+      value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 5476734514171880765, guid: 39e701719152d6442a8c383c90d920ba, type: 3}
+      propertyPath: button.value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5476734514171880767, guid: 39e701719152d6442a8c383c90d920ba, type: 3}
       propertyPath: m_Color.b

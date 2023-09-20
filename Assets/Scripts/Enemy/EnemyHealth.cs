@@ -27,6 +27,9 @@ namespace Enemy
 
         public void TakeDamage(float damage)
         {
+            if (_current <= 0)
+                return;
+            
             _current -= damage;
             _animator.PlayHit();
             
