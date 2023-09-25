@@ -62,113 +62,7 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: '
-
-    Transform ''Finger_03'' has been deleted
-
-    Transform
-    ''Finger_02'' has been deleted
-
-    Transform ''Finger_01'' has been deleted
-
-    Transform
-    ''IndexFinger_03'' has been deleted
-
-    Transform ''IndexFinger_02'' has been
-    deleted
-
-    Transform ''IndexFinger_01'' has been deleted
-
-    Transform ''Thumb_03''
-    has been deleted
-
-    Transform ''Thumb_02'' has been deleted
-
-    Transform
-    ''Thumb_01'' has been deleted
-
-    Transform ''Hand_L'' has been deleted
-
-    Transform
-    ''Elbow_L'' has been deleted
-
-    Transform ''Shoulder_L'' has been deleted
-
-    Transform
-    ''Clavicle_L'' has been deleted
-
-    Transform ''Finger_03 1'' has been deleted
-
-    Transform
-    ''Finger_02 1'' has been deleted
-
-    Transform ''Finger_01 1'' has been deleted
-
-    Transform
-    ''IndexFinger_03 1'' has been deleted
-
-    Transform ''IndexFinger_02 1'' has
-    been deleted
-
-    Transform ''IndexFinger_01 1'' has been deleted
-
-    Transform
-    ''Thumb_03 1'' has been deleted
-
-    Transform ''Thumb_02 1'' has been deleted
-
-    Transform
-    ''Thumb_01 1'' has been deleted
-
-    Transform ''Hand_R'' has been deleted
-
-    Transform
-    ''Elbow_R'' has been deleted
-
-    Transform ''Shoulder_R'' has been deleted
-
-    Transform
-    ''Clavicle_R'' has been deleted
-
-    Transform ''Eyes'' has been deleted
-
-    Transform
-    ''Head'' has been deleted
-
-    Transform ''Neck'' has been deleted
-
-    Transform
-    ''Spine_03'' has been deleted
-
-    Transform ''Spine_02'' has been deleted
-
-    Transform
-    ''Spine_01'' has been deleted
-
-    Transform ''Ball_L'' has been deleted
-
-    Transform
-    ''Ankle_L'' has been deleted
-
-    Transform ''LowerLeg_L'' has been deleted
-
-    Transform
-    ''UpperLeg_L'' has been deleted
-
-    Transform ''Ball_R'' has been deleted
-
-    Transform
-    ''Ankle_R'' has been deleted
-
-    Transform ''LowerLeg_R'' has been deleted
-
-    Transform
-    ''UpperLeg_R'' has been deleted
-
-    Transform ''Hips'' has been deleted
-
-    Transform
-    ''Root'' has been deleted'
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -263,10 +157,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: -7740876265824495302}
-  _effectiveDistance: 0.5
   _attackCooldown: 1
-  _cleavage: 1
-  _damage: 10
+  EffectiveDistance: 0.5
+  Cleavage: 1
+  Damage: 10
 --- !u!114 &1190445934145703300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,7 +489,7 @@ GameObject:
   - component: {fileID: 5696550311167853105}
   - component: {fileID: 4607606448755892505}
   - component: {fileID: 6472100069728536098}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AggroZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

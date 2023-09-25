@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
+using StaticData;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -13,7 +13,7 @@ namespace Infrastructure.Factory
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
         void CleanUp();
-        GameObject HeroGameObject { get; }
-        event Action HeroCreated;
+        void Register(ISavedProgressReader progressReader);
+        GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent);
     }
 }

@@ -39,8 +39,6 @@ namespace Hero
             for (int i = 0; i < Hit(); i++)
             {
                 _hits[i].transform.parent.GetComponent<IHealth>().TakeDamage(_stats.Damage);
-                Debug.Log("Attack");
-
             }
         }
 
