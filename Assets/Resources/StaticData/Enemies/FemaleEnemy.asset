@@ -15,6 +15,8 @@ MonoBehaviour:
   EnemyTypeId: 1
   Hp: 10
   Damage: 15
+  MaxLoot: 1
+  MinLoot: 7
   EffectiveDistance: 1
   Cleavage: 0.5
   MoveSpeed: 3

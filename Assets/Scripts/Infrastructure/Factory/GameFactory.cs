@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using Data;
 using Enemy;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
+using Infrastructure.Services.Randomizer;
 using Logic;
 using StaticData;
 using UI;
@@ -16,16 +18,20 @@ namespace Infrastructure.Factory
     {
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
+        private IRandomService _randomService;
+        private IPersistentProgressService _progressService;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject HeroGameObject { get; set; }
 
-        public GameFactory(IAssets assets, IStaticDataService staticData)
+        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService)
         {
             _assets = assets;
             _staticData = staticData;
+            _randomService = randomService;
+            _progressService = progressService;
         }
 
         public GameObject CreateHero(GameObject at)
@@ -35,15 +41,21 @@ namespace Infrastructure.Factory
             return HeroGameObject;
         }
 
-        public GameObject CreateHud() =>
-            InstantiateRegistered(AssetPath.HudPath);
+        public GameObject CreateHud()
+        {
+            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            hud.GetComponentInChildren<LootCounter>()
+                .Construct(_progressService.Progress.WorldData);
+            
+            return hud;
+        }
 
         public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
             EnemyStaticData enemyData = _staticData.ForEnemy(enemyTypeId);
             GameObject enemy = Object.Instantiate(enemyData.Prefab, parent.position, Quaternion.identity, parent);
 
-            var health = enemy.GetComponent<IHealth>();
+            IHealth health = enemy.GetComponent<IHealth>();
             health.Current = enemyData.Hp;
             health.Max = enemyData.Hp;
 
@@ -51,13 +63,25 @@ namespace Infrastructure.Factory
             enemy.GetComponent<AgentMoveToPlayer>().Construct(HeroGameObject.transform);
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MoveSpeed;
 
-            var attack = enemy.GetComponent<Attack>();
+            LootSpawner lootSpawner = enemy.GetComponentInChildren<LootSpawner>();
+            lootSpawner.SetLoot(enemyData.MinLoot, enemyData.MaxLoot);
+            lootSpawner.Construct(this, _randomService);
+
+            Attack attack = enemy.GetComponent<Attack>();
             attack.Construct(HeroGameObject.transform);
             attack.Damage = enemyData.Damage;
             attack.Cleavage = enemyData.Cleavage;
             attack.EffectiveDistance = enemyData.EffectiveDistance;
-
+            
             return enemy;
+        }
+
+        public LootPiece CreateLoot()
+        {
+            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+            lootPiece.Construct(_progressService.Progress.WorldData);
+            
+            return lootPiece;
         }
 
         public void CleanUp()
