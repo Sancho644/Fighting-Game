@@ -13,6 +13,7 @@ namespace Enemy
         [SerializeField] private float _deathCooldown = 3f;
         [SerializeField] private GameObject _deathFx;
 
+
         public event Action Happened;
 
         private void Start()

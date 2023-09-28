@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Data;
 using Enemy;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.Randomizer;
 using Logic;
+using Logic.EnemySpawners;
 using StaticData;
 using UI;
 using UnityEngine;
@@ -22,6 +22,7 @@ namespace Infrastructure.Factory
         private IPersistentProgressService _progressService;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
+
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject HeroGameObject { get; set; }
@@ -76,12 +77,22 @@ namespace Infrastructure.Factory
             return enemy;
         }
 
-        public LootPiece CreateLoot()
+        public LootPiece CreateLoot(Vector3 parent)
         {
-            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot, parent).GetComponent<LootPiece>();
             lootPiece.Construct(_progressService.Progress.WorldData);
             
             return lootPiece;
+        }
+
+        public void CreateSpawners(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
+        {
+            SpawnPoint spawner = InstantiateRegistered(AssetPath.Spawner, at)
+                .GetComponent<SpawnPoint>();
+
+            spawner.Construct(this);
+            spawner.Id = spawnerId;
+            spawner.EnemyTypeId = enemyTypeId;
         }
 
         public void CleanUp()

@@ -6,5 +6,6 @@ namespace Infrastructure.Services
     {
         void LoadEnemies();
         EnemyStaticData ForEnemy(EnemyTypeId enemyId);
+        LevelStaticData ForLevel(string sceneKey);
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Data;
+using Logic;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +18,15 @@ namespace Enemy
         private Loot _loot;
         private bool _picked;
         private WorldData _worldData;
+
+        public string LootId { get; private set; }
+
+        public event Action Picked;
+
+        private void Awake()
+        {
+            LootId = GetComponent<UniqueId>().Id;
+        }
 
         public void Construct(WorldData worldData)
         {
@@ -41,6 +52,7 @@ namespace Enemy
             HideLootPrefab();
             PlayPickupFx();
             ShowText();
+            Picked?.Invoke();
 
             StartCoroutine(StartDestroyTimer());
         }

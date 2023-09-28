@@ -11,13 +11,13 @@ namespace Infrastructure.Factory
     {
         GameObject CreateHero(GameObject at);
         GameObject CreateHud();
-        LootPiece CreateLoot();
+        LootPiece CreateLoot(Vector3 parent);
         GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent);
-
+        void CreateSpawners(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId);
+        
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
 
         void CleanUp();
-        void Register(ISavedProgressReader progressReader);
     }
 }
