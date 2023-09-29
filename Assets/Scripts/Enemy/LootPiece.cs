@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Data;
-using Logic;
 using TMPro;
 using UnityEngine;
 
@@ -22,11 +21,7 @@ namespace Enemy
         public string LootId { get; private set; }
 
         public event Action Picked;
-
-        private void Awake()
-        {
-            LootId = GetComponent<UniqueId>().Id;
-        }
+        
 
         public void Construct(WorldData worldData)
         {
