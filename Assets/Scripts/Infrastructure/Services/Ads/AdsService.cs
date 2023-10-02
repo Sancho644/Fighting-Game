@@ -4,17 +4,18 @@ using UnityEngine.Advertisements;
 
 namespace Infrastructure.Services.Ads
 {
-    public class AdsService : IAdsService, IUnityAdsShowListener
+    public class AdsService : IAdsService, IUnityAdsShowListener, IUnityAdsLoadListener, IUnityAdsInitializationListener
     {
+        private const string RewardedVideoPlacementId = "Rewarded_Android";
         private const string AndroidGameId = "5431165";
         private const string IOSGameId = "5431164";
-
-        private const string RewardedVideoPlacementId = "Rewarded_Android";
 
         private string _gameId;
         private Action _onVideoFinished;
 
         public event Action RewardedVideoReady;
+
+        public int Reward => 13;
 
         public void Initialize()
         {
@@ -27,28 +28,33 @@ namespace Infrastructure.Services.Ads
                     _gameId = IOSGameId;
                     break;
                 case RuntimePlatform.WindowsEditor:
-                    _gameId = IOSGameId;
+                    _gameId = AndroidGameId;
                     break;
                 default:
                     Debug.Log("Unsupported platform for ads");
                     break;
             }
 
-            Advertisement.Initialize(_gameId);
+            Advertisement.Initialize(_gameId, true, this);
+        }
+
+        private void LoadRewardedAd()
+        {
+            Advertisement.Load(RewardedVideoPlacementId, this);
         }
 
         public void ShowRewardedVideo(Action onVideoFinished)
         {
-            Advertisement.Show(RewardedVideoPlacementId);
+            LoadRewardedAd();
 
             _onVideoFinished = onVideoFinished;
         }
 
-        public bool IsRewardedVideoReady => 
+        public bool IsRewardedVideoReady =>
             Advertisement.isInitialized;
 
         public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message) =>
-            Debug.Log($"OnUnityAdsShowFailure{message}");
+            Debug.Log($"OnUnityAdsShowFailure{message}, {error}");
 
         public void OnUnityAdsShowStart(string placementId) =>
             Debug.Log($"OnUnityAdsShowStart{placementId}");
@@ -56,9 +62,6 @@ namespace Infrastructure.Services.Ads
         public void OnUnityAdsShowClick(string placementId)
         {
             Debug.Log($"OnUnityAdsShowClick{placementId}");
-
-            if (placementId == RewardedVideoPlacementId)
-                RewardedVideoReady?.Invoke();
         }
 
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
@@ -81,5 +84,25 @@ namespace Infrastructure.Services.Ads
 
             _onVideoFinished = null;
         }
+
+        public void OnInitializationFailed(UnityAdsInitializationError error, string message) =>
+            Debug.Log($"OnUnityAdsShowFailure{message}, {error}");
+
+        public void OnInitializationComplete()
+        {
+            Debug.Log("OnInitializationComplete");
+
+            RewardedVideoReady?.Invoke();
+        }
+
+        public void OnUnityAdsAdLoaded(string placementId)
+        {
+            Advertisement.Show(RewardedVideoPlacementId, this);
+
+            Debug.Log($"OnUnityAdsAdLoaded{placementId}");
+        }
+
+        public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message) =>
+            Debug.Log($"OnUnityAdsFailedToLoad{placementId}, {error}, {message}");
     }
 }

@@ -12,7 +12,7 @@ namespace UI.Windows
         
         public Button CloseButton;
 
-        public void Construct(IPersistentProgressService progressService) => 
+        protected void Construct(IPersistentProgressService progressService) => 
             ProgressService = progressService;
 
         private void Awake() =>
