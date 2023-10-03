@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a67babc521b48908d7bd075cab320f6, type: 3}
-  m_Name: Graveyard
+  m_Name: Level2
   m_EditorClassIdentifier: 
-  LevelKey: Main
+  LevelKey: Level2
   EnemySpawners:
   - Id: _e74b9180-69fb-4677-9ca1-a7e30f023f62
     EnemyTypeId: 0
@@ -26,4 +26,4 @@ MonoBehaviour:
   - Id: Main_1f99918b-6801-408c-ad1d-a8aeeb16eb97
     EnemyTypeId: 0
     Position: {x: -1.92, y: 0.049999997, z: 21.15}
-  InitialHeroPosition: {x: 3.2276926, y: 0, z: 1.95}
+  InitialHeroPosition: {x: -6.87, y: 0, z: -1.9}

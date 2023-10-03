@@ -9,7 +9,7 @@ namespace Infrastructure.Factory
 {
     public interface IGameFactory : IService
     {
-        GameObject CreateHero(GameObject at);
+        GameObject CreateHero(Vector3 at);
         GameObject CreateHud();
         LootPiece CreateLoot(Vector3 parent);
         GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent);
