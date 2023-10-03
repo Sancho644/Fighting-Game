@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1868984069858094250}
   - component: {fileID: 1868984069858094249}
   - component: {fileID: 8676023028809814383}
+  - component: {fileID: -6372547191151180800}
   m_Layer: 10
   m_Name: BaseLoot
   m_TagString: Untagged
@@ -66,6 +67,19 @@ MonoBehaviour:
   _pickupPopup: {fileID: 7332324217289404225}
   _lootText: {fileID: 3678660235286979688}
   _destroyCooldown: 1.5
+--- !u!114 &-6372547191151180800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868984069858094251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadeffb548b444e199a45b9cd8644a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: BaseLoot_0a0952c8-61c5-4e31-840f-a49c6f00b210
 --- !u!1001 &1868984069752536791
 PrefabInstance:
   m_ObjectHideFlags: 0

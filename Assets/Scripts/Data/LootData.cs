@@ -5,6 +5,8 @@ namespace Data
     [Serializable]
     public class LootData
     {
+        public LootPieceDataDictionary LootPiecesOnScene = new LootPieceDataDictionary();
+
         public int Collected;
         public Action Changed;
 

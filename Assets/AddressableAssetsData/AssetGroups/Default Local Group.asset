@@ -16,7 +16,35 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 805a81a8894af90479b7263fa1ace50a
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: d4cd6900a6f78d144b82455e9b1abf5a
+    m_Address: Enemy_Female
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ef71db002cfd61745ad59a05022e175d
+    m_Address: Enemy_Male
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cfd1a5683b655f3409f330987f740e97
+    m_Address: BaseLoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9adc1fade4f5ed34badb5edac7b54e7e
+    m_Address: SpawnPoint
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 60770bdb4dc667c45bea53db0339dc05
+    m_Address: Hero
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e23419bac0eae794da8cf787f69a2ca5
+    m_Address: Hud
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 691681f5ea3e55d4192ab52b3f61cabf
+    m_Address: UIRoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 6513c731f4ee08047a990e54818c5550, type: 2}
   m_SchemaSet:

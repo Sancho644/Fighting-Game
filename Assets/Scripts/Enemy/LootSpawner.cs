@@ -15,11 +15,6 @@ namespace Enemy
         private int _lootMin;
         private int _lootMax;
 
-
-        public delegate void Action(LootPiece lootPiece);
-
-        public event Action OnSpawn;
-        
         public void Construct(IGameFactory factory, IRandomService random)
         {
             _factory = factory;
@@ -31,15 +26,13 @@ namespace Enemy
             _enemyDeath.Happened += SpawnLoot;
         }
 
-        private void SpawnLoot()
+        private async void SpawnLoot()
         {
-            var lootPiece = _factory.CreateLoot(transform.position);
-            //lootPiece.transform.position = transform.position;
-            
-            var lootItem = GenerateLoot();
-            lootPiece.Initialize(lootItem);
+            LootPiece lootPiece = await _factory.CreateLoot();
+            lootPiece.transform.position = transform.position;
 
-            OnSpawn?.Invoke(lootPiece);
+            Loot lootItem = GenerateLoot();
+            lootPiece.Initialize(lootItem);
         }
 
         private Loot GenerateLoot()

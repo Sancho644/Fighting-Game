@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Enemy;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services;
@@ -29,7 +30,8 @@ namespace Infrastructure.Factory
 
         private GameObject HeroGameObject { get; set; }
 
-        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService, IWindowService windowService)
+        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
+            IPersistentProgressService progressService, IWindowService windowService)
         {
             _assets = assets;
             _staticData = staticData;
@@ -38,29 +40,37 @@ namespace Infrastructure.Factory
             _windowService = windowService;
         }
 
-        public GameObject CreateHero(Vector3 at)
+        public async Task WarmUp()
         {
-            HeroGameObject = InstantiateRegistered(AssetPath.HeroPath, at);
+            await _assets.Load<GameObject>(AssetAddress.Loot);
+            await _assets.Load<GameObject>(AssetAddress.Spawner);
+        }
+
+        public async Task<GameObject> CreateHero(Vector3 at)
+        {
+            HeroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
 
             return HeroGameObject;
         }
 
-        public GameObject CreateHud()
+        public async Task<GameObject> CreateHud()
         {
-            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            GameObject hud = await InstantiateRegisteredAsync(AssetAddress.HudPath);
             hud.GetComponentInChildren<LootCounter>()
                 .Construct(_progressService.Progress.WorldData);
 
             foreach (OpenWindowButton openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
                 openWindowButton.Construct(_windowService);
-            
+
             return hud;
         }
 
-        public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
+        public async Task<GameObject> CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
             EnemyStaticData enemyData = _staticData.ForEnemy(enemyTypeId);
-            GameObject enemy = Object.Instantiate(enemyData.Prefab, parent.position, Quaternion.identity, parent);
+
+            GameObject prefab = await _assets.Load<GameObject>(enemyData.PrefabReference);
+            GameObject enemy = Object.Instantiate(prefab, parent.position, Quaternion.identity, parent);
 
             IHealth health = enemy.GetComponent<IHealth>();
             health.Current = enemyData.Hp;
@@ -79,21 +89,25 @@ namespace Infrastructure.Factory
             attack.Damage = enemyData.Damage;
             attack.Cleavage = enemyData.Cleavage;
             attack.EffectiveDistance = enemyData.EffectiveDistance;
-            
+
             return enemy;
         }
 
-        public LootPiece CreateLoot(Vector3 parent)
+        public async Task<LootPiece> CreateLoot()
         {
-            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot, parent).GetComponent<LootPiece>();
-            lootPiece.Construct(_progressService.Progress.WorldData);
+            GameObject prefab = await _assets.Load<GameObject>(AssetAddress.Loot);
+            LootPiece lootPiece = InstantiateRegistered(prefab).GetComponent<LootPiece>();
             
+            lootPiece.Construct(_progressService.Progress.WorldData);
+
             return lootPiece;
         }
 
-        public void CreateSpawners(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
+        public async Task CreateSpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {
-            SpawnPoint spawner = InstantiateRegistered(AssetPath.Spawner, at)
+            GameObject prefab = await _assets.Load<GameObject>(AssetAddress.Spawner);
+            
+            SpawnPoint spawner = InstantiateRegistered(prefab, at)
                 .GetComponent<SpawnPoint>();
 
             spawner.Construct(this);
@@ -105,28 +119,34 @@ namespace Infrastructure.Factory
         {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
+            
+            _assets.CleanUp();
         }
 
-        public void Register(ISavedProgressReader progressReader)
+        private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath, Vector3 at)
         {
-            if (progressReader is ISavedProgress progressWriter)
-            {
-                ProgressWriters.Add(progressWriter);
-            }
-
-            ProgressReaders.Add(progressReader);
-        }
-
-        private GameObject InstantiateRegistered(string prefabPath, Vector3 at)
-        {
-            GameObject gameObject = _assets.Instantiate(prefabPath, at);
+            GameObject gameObject = await _assets.Instantiate(prefabPath, at);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
 
-        private GameObject InstantiateRegistered(string prefabPath)
+        private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath)
         {
-            GameObject gameObject = _assets.Instantiate(prefabPath);
+            GameObject gameObject = await _assets.Instantiate(prefabPath);
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
+        }
+
+        private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
+        {
+            GameObject gameObject = Object.Instantiate(prefab, at, Quaternion.identity);
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
+        }
+
+        private GameObject InstantiateRegistered(GameObject prefab)
+        {
+            GameObject gameObject = Object.Instantiate(prefab);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
@@ -135,6 +155,16 @@ namespace Infrastructure.Factory
         {
             foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
                 Register(progressReader);
+        }
+
+        private void Register(ISavedProgressReader progressReader)
+        {
+            if (progressReader is ISavedProgress progressWriter)
+            {
+                ProgressWriters.Add(progressWriter);
+            }
+
+            ProgressReaders.Add(progressReader);
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Data;
+using Infrastructure.Services.PersistentProgress;
+using Logic;
 using TMPro;
 using UnityEngine;
 
 namespace Enemy
 {
-    public class LootPiece : MonoBehaviour
+    public class LootPiece : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private GameObject _lootPrefab;
         [SerializeField] private GameObject _pickupFxPrefab;
@@ -15,13 +16,9 @@ namespace Enemy
         [SerializeField] private float _destroyCooldown;
 
         private Loot _loot;
-        private bool _picked;
+        private bool _pickedUp;
         private WorldData _worldData;
-
-        public string LootId { get; private set; }
-
-        public event Action Picked;
-        
+        private string _id;
 
         public void Construct(WorldData worldData)
         {
@@ -33,21 +30,41 @@ namespace Enemy
             _loot = loot;
         }
 
-        private void OnTriggerEnter(Collider other) =>
+        private void Start() =>
+            _id = GetComponent<UniqueId>().Id;
+
+        public void UpdateProgress(PlayerProgress progress)
+        {
+            if (_pickedUp)
+                return;
+
+            LootPieceDataDictionary lootPiecesOnScene = progress.WorldData.LootData.LootPiecesOnScene;
+
+            if (!lootPiecesOnScene.Dictionary.ContainsKey(_id))
+                lootPiecesOnScene.Dictionary
+                    .Add(_id, new LootPieceData(transform.position.AsVectorData(), _loot));
+        }
+
+        public void LoadProgress(PlayerProgress progress)
+        {
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (_pickedUp)
+                return;
+
+            _pickedUp = true;
+
             Pickup();
+        }
 
         private void Pickup()
         {
-            if (_picked)
-                return;
-
-            _picked = true;
-
             UpdateWorldData();
             HideLootPrefab();
             PlayPickupFx();
             ShowText();
-            Picked?.Invoke();
 
             StartCoroutine(StartDestroyTimer());
         }
@@ -55,6 +72,15 @@ namespace Enemy
         private void UpdateWorldData()
         {
             _worldData.LootData.Collect(_loot);
+            RemoveLootPieceFromSavedPieces();
+        }
+
+        private void RemoveLootPieceFromSavedPieces()
+        {
+            LootPieceDataDictionary savedLootPieces = _worldData.LootData.LootPiecesOnScene;
+
+            if (savedLootPieces.Dictionary.ContainsKey(_id))
+                savedLootPieces.Dictionary.Remove(_id);
         }
 
         private void HideLootPrefab() =>

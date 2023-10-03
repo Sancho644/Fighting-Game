@@ -35,9 +35,9 @@ namespace Logic.EnemySpawners
                 progress.KillData.ClearedSpawners.Add(Id);
         }
 
-        private void Spawn()
+        private async void Spawn()
         {
-            _enemy = _factory.CreateEnemy(EnemyTypeId, transform);
+            _enemy = await _factory.CreateEnemy(EnemyTypeId, transform);
             _enemyDeath = _enemy.GetComponent<EnemyDeath>();
 
             _enemyDeath.Happened += Slay;

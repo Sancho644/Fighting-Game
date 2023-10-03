@@ -3157,6 +3157,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnMarker (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9219937867993676557, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
 --- !u!4 &237340003 stripped
@@ -7820,6 +7824,10 @@ PrefabInstance:
     - target: {fileID: 9219937867993676557, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
       propertyPath: m_Name
       value: SpawnMarker (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219937867993676557, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
@@ -16135,6 +16143,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnMarker (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 9219937867993676557, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
 --- !u!4 &1582393229 stripped
@@ -21889,6 +21901,10 @@ PrefabInstance:
     - target: {fileID: 9219937867993676557, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
       propertyPath: m_Name
       value: SpawnMarker
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219937867993676557, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274415d0fe3a46d40855c7a83be8639b, type: 3}
