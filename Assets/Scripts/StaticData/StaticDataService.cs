@@ -12,9 +12,9 @@ namespace StaticData
         private const string StaticDataEnemiesPath = "StaticData/Enemies";
         private const string StaticDataLevelsPath = "StaticData/Levels";
         private const string StaticDataWindowsPath = "StaticData/UI/WindowsStaticData";
-        
+
         private Dictionary<EnemyTypeId, EnemyStaticData> _enemyes;
-        private Dictionary<WindowId,WindowConfig> _windowConfigs;
+        private Dictionary<WindowId, WindowConfig> _windowConfigs;
         private Dictionary<string, LevelStaticData> _levels;
 
         public void LoadEnemies()
@@ -22,11 +22,11 @@ namespace StaticData
             _enemyes = Resources
                 .LoadAll<EnemyStaticData>(StaticDataEnemiesPath)
                 .ToDictionary(x => x.EnemyTypeId, x => x);
-            
+
             _levels = Resources
                 .LoadAll<LevelStaticData>(StaticDataLevelsPath)
                 .ToDictionary(x => x.LevelKey, x => x);
-            
+
             _windowConfigs = Resources
                 .Load<WindowsStaticData>(StaticDataWindowsPath)
                 .Configs
@@ -36,10 +36,10 @@ namespace StaticData
         public EnemyStaticData ForEnemy(EnemyTypeId enemyId) =>
             _enemyes.TryGetValue(enemyId, out EnemyStaticData staticData) ? staticData : null;
 
-        public LevelStaticData ForLevel(string sceneKey) => 
+        public LevelStaticData ForLevel(string sceneKey) =>
             _levels.TryGetValue(sceneKey, out LevelStaticData staticData) ? staticData : null;
 
-        public WindowConfig ForWindow(WindowId windowId) => 
+        public WindowConfig ForWindow(WindowId windowId) =>
             _windowConfigs.TryGetValue(windowId, out WindowConfig windowConfig) ? windowConfig : null;
     }
 }

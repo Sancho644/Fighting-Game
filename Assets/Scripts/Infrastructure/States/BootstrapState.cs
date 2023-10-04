@@ -2,6 +2,7 @@
 using Infrastructure.Factory;
 using Infrastructure.Services;
 using Infrastructure.Services.Ads;
+using Infrastructure.Services.IAP;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.PersistentProgress.SaveLoad;
@@ -52,14 +53,19 @@ namespace Infrastructure.States
 
             _services.RegisterSingle<IGameStateMachine>(_stateMachine);
             _services.RegisterSingle<IInputService>(InputService());
+            
             RegisterAssetProvider();
+            
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
+            
+            RegisterIAPService(new IAPProvider(), _services.Single<IPersistentProgressService>());
 
             _services.RegisterSingle<IUIFactory>(new UIFactory(
                 _services.Single<IAssets>(),
                 _services.Single<IStaticDataService>(), 
                 _services.Single<IPersistentProgressService>(),
-                _services.Single<IAdsService>()));
+                _services.Single<IAdsService>(),
+                _services.Single<IIAPService>()));
             
             _services.RegisterSingle<IWindowService>(new WindowService(_services.Single<IUIFactory>()));
 
@@ -86,6 +92,13 @@ namespace Infrastructure.States
             var adsService = new AdsService();
             adsService.Initialize();
             _services.RegisterSingle<IAdsService>(adsService);
+        }
+        
+        private void RegisterIAPService(IAPProvider iapProvider, IPersistentProgressService progressService)
+        {
+            var iapService = new IAPService(iapProvider, progressService);
+            iapService.Initialize();
+            _services.RegisterSingle<IIAPService>(iapService);
         }
 
         private void RegisterStaticData()

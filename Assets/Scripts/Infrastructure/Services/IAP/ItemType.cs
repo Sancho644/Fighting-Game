@@ -1,0 +1,8 @@
+﻿namespace Infrastructure.Services.IAP
+{
+    public enum ItemType
+    {
+        None = 0,
+        Money = 1,
+    }
+}
