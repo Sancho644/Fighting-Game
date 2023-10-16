@@ -6,7 +6,7 @@ namespace Infrastructure.States
 {
     public class LoadProgressState : IState
     {
-        private const string Main = "Main";
+        private const string Main = "MainMenu";
 
         private readonly IPersistentProgressService _progressService;
         private readonly GameStateMachine _gameStateMachine;
@@ -23,8 +23,10 @@ namespace Infrastructure.States
         public void Enter()
         {
             LoadProgressOrInitNew();
+            
+            _gameStateMachine.Enter<LoadLevelState, string>(Main);
 
-            _gameStateMachine.Enter<LoadLevelState, string>(_progressService.Progress.WorldData.PositionOnLevel.Level);
+            //_gameStateMachine.Enter<LoadMainMenuState>();
         }
 
         public void Exit()

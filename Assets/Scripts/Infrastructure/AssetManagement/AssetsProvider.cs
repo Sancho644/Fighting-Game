@@ -22,8 +22,7 @@ namespace Infrastructure.AssetManagement
                 return completedHandle.Result as T;
 
             return await RunWithCacheOnComplete(
-                Addressables.LoadAssetAsync<T>(assetReference), 
-                assetReference.AssetGUID);
+                Addressables.LoadAssetAsync<T>(assetReference), assetReference.AssetGUID);
         }
 
         public async Task<T> Load<T>(string address) where T : class
@@ -32,8 +31,7 @@ namespace Infrastructure.AssetManagement
                 return completeHandle.Result as T;
 
             return await RunWithCacheOnComplete(
-                Addressables.LoadAssetAsync<T>(address), 
-                address);
+                Addressables.LoadAssetAsync<T>(address), address);
         }
 
         public Task<GameObject> Instantiate(string address) => 

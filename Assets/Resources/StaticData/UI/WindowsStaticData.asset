@@ -15,3 +15,11 @@ MonoBehaviour:
   Configs:
   - WindowId: 1
     Prefab: {fileID: 2053892508955764655, guid: 490f6a47097f63e40bf717e4a8ba712c, type: 3}
+  - WindowId: 4
+    Prefab: {fileID: 813757214390631832, guid: aeaf83ffcabe4984d90120bd3e8ff3d1, type: 3}
+  - WindowId: 5
+    Prefab: {fileID: 7322668824830894629, guid: f15850b196316d04486e49f4dd0ed396, type: 3}
+  - WindowId: 2
+    Prefab: {fileID: 2645803151509989030, guid: bec8be891dae7124a81e12d2f207cc4d, type: 3}
+  - WindowId: 3
+    Prefab: {fileID: 6952958166262833042, guid: 1d297d4161d6e9b46985e268e200dee3, type: 3}

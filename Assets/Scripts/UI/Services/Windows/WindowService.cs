@@ -17,7 +17,8 @@ namespace UI.Services.Windows
             {
                 case WindowId.Unknown:
                     break;
-                case WindowId.Shop:
+                case WindowId.ShopWindow:
+                    _uiFactory.CreateUIRoot();
                     _uiFactory.CreateShop();
                     break;
             }

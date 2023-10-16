@@ -1,19 +1,17 @@
 ﻿using Data;
 using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI.Windows
 {
     public abstract class WindowBase : MonoBehaviour
     {
-        protected IPersistentProgressService ProgressService;
-        protected PlayerProgress Progress => ProgressService.Progress;
+        private IPersistentProgressService _progressService;
+        protected PlayerProgress Progress => _progressService.Progress;
         
-        public Button CloseButton;
 
         protected void Construct(IPersistentProgressService progressService) => 
-            ProgressService = progressService;
+            _progressService = progressService;
 
         private void Awake() =>
             OnAwake();
@@ -27,8 +25,9 @@ namespace UI.Windows
         private void OnDestroy() =>
             Cleanup();
 
-        protected virtual void OnAwake() =>
-            CloseButton.onClick.AddListener(() => Destroy(gameObject));
+        protected virtual void OnAwake()
+        {
+        }
 
         protected virtual void Initialize()
         {

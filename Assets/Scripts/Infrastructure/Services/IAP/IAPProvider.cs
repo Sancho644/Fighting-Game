@@ -40,7 +40,7 @@ namespace Infrastructure.Services.IAP
 
             var options = new InitializationOptions()
                 .SetEnvironmentName("environment");
-            
+
             await UnityServices.InitializeAsync(options);
 
             UnityPurchasing.Initialize(this, builder);
@@ -70,7 +70,7 @@ namespace Infrastructure.Services.IAP
         public void OnInitializeFailed(InitializationFailureReason error, string message)
         {
         }
-        
+
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
             Debug.Log($"ProcessPurchase success {purchaseEvent.purchasedProduct.definition.id}");
@@ -79,7 +79,8 @@ namespace Infrastructure.Services.IAP
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason) =>
-            Debug.Log($"Product {product.definition.id} purchase failed, PurchaseFailureReason {failureReason}, transaction id {product.transactionID}");
+            Debug.Log(
+                $"Product {product.definition.id} purchase failed, PurchaseFailureReason {failureReason}, transaction id {product.transactionID}");
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {

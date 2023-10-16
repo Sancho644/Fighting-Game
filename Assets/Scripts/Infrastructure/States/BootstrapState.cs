@@ -57,15 +57,21 @@ namespace Infrastructure.States
             RegisterAssetProvider();
             
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-            
+
             RegisterIAPService(new IAPProvider(), _services.Single<IPersistentProgressService>());
+
+            _services.RegisterSingle<IInitGameWorldService>(new InitGameWorldService( 
+                _services.Single<IPersistentProgressService>(), 
+                _services.Single<IStaticDataService>()));
 
             _services.RegisterSingle<IUIFactory>(new UIFactory(
                 _services.Single<IAssets>(),
                 _services.Single<IStaticDataService>(), 
                 _services.Single<IPersistentProgressService>(),
                 _services.Single<IAdsService>(),
-                _services.Single<IIAPService>()));
+                _services.Single<IIAPService>(), 
+                _sceneLoader, 
+                _services.Single<IInitGameWorldService>()));
             
             _services.RegisterSingle<IWindowService>(new WindowService(_services.Single<IUIFactory>()));
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace UI.Windows.Shop
 {
-    public class ShopItemsContainer : MonoBehaviour
+    public class ShopItems : WindowBase
     {
         private const string ShopItemPath = "ShopItem";
 

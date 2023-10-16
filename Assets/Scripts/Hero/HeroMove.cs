@@ -45,7 +45,7 @@ namespace Hero
 
         public void UpdateProgress(PlayerProgress progress)
         {
-            progress.WorldData.PositionOnLevel = new PositionOnLevel(CurrentLevel(), transform.position.AsVectorData());
+            progress.WorldData.PositionOnLevel = new PositionOnLevel(CurrentLevel(), _characterController.transform.position.AsVectorData());
         }
 
         public void LoadProgress(PlayerProgress progress)
@@ -64,7 +64,7 @@ namespace Hero
         private void Warp(Vector3Data to)
         {
             _characterController.enabled = false;
-            transform.position = to.AsUnityVector().AddY(_characterController.height);
+            _characterController.transform.position = to.AsUnityVector();
             _characterController.enabled = true;
         }
     }

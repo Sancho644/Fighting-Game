@@ -22,7 +22,6 @@ namespace UI.Windows.Shop
         {
             _iapService = iapService;
             _assets = assets;
-            
             _productDescription = productDescription;
         }
 

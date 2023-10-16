@@ -3,45 +3,62 @@ using Infrastructure.Services.Ads;
 using Infrastructure.Services.IAP;
 using Infrastructure.Services.PersistentProgress;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI.Windows.Shop
 {
     public class ShopWindow : WindowBase
     {
-        public TextMeshProUGUI MoneyText;
-        public RewardedAdItem AdItem;
-        public ShopItemsContainer ShopItemsContainer;
+        [SerializeField] private Button _closeButton;
+        [SerializeField] private TextMeshProUGUI _moneyText;
+        
+        [field: SerializeField] public Transform AdItemContainer { get; private set; }
+        [field: SerializeField] public Transform ShopItemsContainer { get; private set; }
+        
+        private RewardedAdItem _adItem;
+        private ShopItems _shopItems;
 
-        public void Construct(IAdsService adsService, IPersistentProgressService progressService, IIAPService iapService, IAssets assets)
+        protected override void OnAwake() => 
+            _closeButton.onClick.AddListener(() => Destroy(gameObject));
+
+        public void Construct(RewardedAdItem rewardedAdItem, ShopItems  shopItems, IAdsService adsService, IPersistentProgressService progressService, IIAPService iapService, IAssets assets)
         {
             base.Construct(progressService);
-            AdItem.Construct(adsService, progressService);
-            ShopItemsContainer.Construct(iapService, progressService, assets);
+
+            _adItem = rewardedAdItem;
+            _shopItems = shopItems;
+
+            _adItem.Construct(adsService, progressService);
+            _shopItems.Construct(iapService, progressService, assets);
         }
 
         protected override void Initialize()
         {
-            AdItem.Initialize();
-            ShopItemsContainer.Initialize();
+            _adItem.Initialize();
+            _shopItems.Initialize();
+            
             RefreshMoneyText();
         }
 
         protected override void SubscribeUpdates()
         {
-            AdItem.Subscribe();
-            ShopItemsContainer.Subscribe();
+            _adItem.Subscribe();
+            _shopItems.Subscribe();
             Progress.WorldData.LootData.Changed += RefreshMoneyText;
         }
 
         protected override void Cleanup()
         {
             base.Cleanup();
-            AdItem.Cleanup();
-            ShopItemsContainer.Cleanup();
+            
+            _adItem.Cleanup();
+            _shopItems.Cleanup();
+            
             Progress.WorldData.LootData.Changed -= RefreshMoneyText;
         }
 
         private void RefreshMoneyText() => 
-            MoneyText.text = Progress.WorldData.LootData.Collected.ToString();
+            _moneyText.text = Progress.WorldData.LootData.Collected.ToString();
     }
 }
