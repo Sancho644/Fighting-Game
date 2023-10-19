@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Audio;
 using Enemy;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
@@ -18,8 +19,11 @@ namespace Infrastructure.Factory
         
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
+        AudioSettingsComponent SfxSource { get; }
+        AudioSettingsComponent MusicSource { get; }
 
         void CleanUp();
         Task WarmUp();
+        Task CreateAudioSources();
     }
 }

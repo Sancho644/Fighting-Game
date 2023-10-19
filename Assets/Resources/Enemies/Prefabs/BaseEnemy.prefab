@@ -208,6 +208,7 @@ MonoBehaviour:
   _aggro: {fileID: 9107105183456627012}
   _deathCooldown: 3
   _deathFx: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
+  _hurtBox: {fileID: 4366755936667996377}
 --- !u!114 &7207069529689641721
 MonoBehaviour:
   m_ObjectHideFlags: 0

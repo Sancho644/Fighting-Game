@@ -7,9 +7,9 @@ namespace UI.Windows.Shop
 {
     public class RewardedAdItem : WindowBase
     {
-        public Button ShowAdButton;
-        public GameObject[] AdActiveObjects;
-        public GameObject[] AdInactiveObjects;
+        [SerializeField] private Button _showAdButton;
+        [SerializeField] private GameObject[] _adActiveObjects;
+        [SerializeField] private GameObject[] _adInactiveObjects;
 
         private IAdsService _adsService;
         private IPersistentProgressService _progressService;
@@ -20,9 +20,9 @@ namespace UI.Windows.Shop
             _progressService = progressService;
         }
 
-        public void Initialize()
+        public void InitializeReward()
         {
-            ShowAdButton.onClick.AddListener(OnShowAdClicked);
+            _showAdButton.onClick.AddListener(OnShowAdClicked);
 
             RefreshAvailableAd();
         }
@@ -30,7 +30,7 @@ namespace UI.Windows.Shop
         public void Subscribe() =>
             _adsService.RewardedVideoReady += RefreshAvailableAd;
 
-        public void Cleanup() =>
+        public void CleanupReward() =>
             _adsService.RewardedVideoReady -= RefreshAvailableAd;
 
         private void OnShowAdClicked() => 
@@ -43,10 +43,10 @@ namespace UI.Windows.Shop
         {
             bool videoReady = _adsService.IsRewardedVideoReady;
 
-            foreach (GameObject adActiveObject in AdActiveObjects)
+            foreach (GameObject adActiveObject in _adActiveObjects)
                 adActiveObject.SetActive(videoReady);
 
-            foreach (GameObject adInactiveObject in AdInactiveObjects)
+            foreach (GameObject adInactiveObject in _adInactiveObjects)
                 adInactiveObject.SetActive(!videoReady);
         }
     }

@@ -80,7 +80,8 @@ namespace Infrastructure.States
                 _services.Single<IStaticDataService>(),
                 randomService,
                 _services.Single<IPersistentProgressService>(),
-                _services.Single<IWindowService>()));
+                _services.Single<IWindowService>(), 
+                _services.Single<IInputService>()));
 
             _services.RegisterSingle<ISaveLoadService>(
                 new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
@@ -88,21 +89,21 @@ namespace Infrastructure.States
 
         private void RegisterAssetProvider()
         {
-            var assetProvider = new AssetsProvider();
+            AssetsProvider assetProvider = new AssetsProvider();
             _services.RegisterSingle<IAssets>(assetProvider);
             assetProvider.Instantiate();
         }
 
         private void RegisterAdsService()
         {
-            var adsService = new AdsService();
+            AdsService adsService = new AdsService();
             adsService.Initialize();
             _services.RegisterSingle<IAdsService>(adsService);
         }
         
         private void RegisterIAPService(IAPProvider iapProvider, IPersistentProgressService progressService)
         {
-            var iapService = new IAPService(iapProvider, progressService);
+            IAPService iapService = new IAPService(iapProvider, progressService);
             iapService.Initialize();
             _services.RegisterSingle<IIAPService>(iapService);
         }

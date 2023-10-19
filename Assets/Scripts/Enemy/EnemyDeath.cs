@@ -12,7 +12,7 @@ namespace Enemy
         [SerializeField] private Aggro _aggro;
         [SerializeField] private float _deathCooldown = 3f;
         [SerializeField] private GameObject _deathFx;
-
+        [SerializeField] private Collider _hurtBox;
 
         public event Action Happened;
 
@@ -38,6 +38,7 @@ namespace Enemy
 
             _aggro.DisableAggro();
             _animator.PlayDeath();
+            _hurtBox.enabled = false;
 
             SpawnDeathFx();
             StartCoroutine(DestroyTimer());

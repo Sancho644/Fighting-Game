@@ -10,6 +10,7 @@ namespace Data
         public Stats HeroStats;
         public KillData KillData;
         public PurchaseData PurchaseData;
+        public AudioData AudioData;
 
         public PlayerProgress(string initialLevel)
         {
@@ -18,6 +19,7 @@ namespace Data
             HeroStats = new Stats();
             KillData = new KillData();
             PurchaseData = new PurchaseData();
+            AudioData = new AudioData();
         }
     }
 }

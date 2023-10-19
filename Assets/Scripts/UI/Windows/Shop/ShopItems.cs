@@ -11,8 +11,8 @@ namespace UI.Windows.Shop
     {
         private const string ShopItemPath = "ShopItem";
 
-        public GameObject[] ShopUnavailableObjects;
-        public Transform Parent;
+        [SerializeField] private GameObject[] _shopUnavailableObjects;
+        [SerializeField] private Transform _parent;
 
         private IIAPService _iapService;
         private IPersistentProgressService _progressService;
@@ -27,7 +27,7 @@ namespace UI.Windows.Shop
             _assets = assets;
         }
 
-        public void Initialize() =>
+        public void InitializeItems() =>
             RefreshAvailableItems();
 
         public void Subscribe()
@@ -36,7 +36,7 @@ namespace UI.Windows.Shop
             _progressService.Progress.PurchaseData.Changed += RefreshAvailableItems;
         }
 
-        public void Cleanup()
+        public void CleanupItems()
         {
             _iapService.Initialized -= RefreshAvailableItems;
             _progressService.Progress.PurchaseData.Changed -= RefreshAvailableItems;
@@ -64,7 +64,7 @@ namespace UI.Windows.Shop
         {
             foreach (ProductDescription productDescription in _iapService.Products())
             {
-                GameObject shopItemObject = await _assets.Instantiate(ShopItemPath, Parent);
+                GameObject shopItemObject = await _assets.Instantiate(ShopItemPath, _parent);
                 ShopItem shopItem = shopItemObject.GetComponent<ShopItem>();
 
                 shopItem.Construct(_iapService, _assets, productDescription);
@@ -76,7 +76,7 @@ namespace UI.Windows.Shop
 
         private void UpdateShopUnavailableObjects()
         {
-            foreach (GameObject shopUnavailableObject in ShopUnavailableObjects)
+            foreach (GameObject shopUnavailableObject in _shopUnavailableObjects)
                 shopUnavailableObject.SetActive(!_iapService.IsInitialized);
         }
     }

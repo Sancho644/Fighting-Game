@@ -6,7 +6,7 @@ namespace Infrastructure.States
 {
     public class LoadProgressState : IState
     {
-        private const string Main = "MainMenu";
+        private const string Initial = "Initial";
 
         private readonly IPersistentProgressService _progressService;
         private readonly GameStateMachine _gameStateMachine;
@@ -24,9 +24,7 @@ namespace Infrastructure.States
         {
             LoadProgressOrInitNew();
             
-            _gameStateMachine.Enter<LoadLevelState, string>(Main);
-
-            //_gameStateMachine.Enter<LoadMainMenuState>();
+            _gameStateMachine.Enter<LoadLevelState, string>(Initial);
         }
 
         public void Exit()
@@ -38,7 +36,7 @@ namespace Infrastructure.States
 
         private PlayerProgress NewProgress()
         {
-            PlayerProgress progress = new PlayerProgress(Main);
+            PlayerProgress progress = new PlayerProgress(Initial);
 
             progress.HeroState.MaxHp = 50f;
             progress.HeroStats.Damage = 1f;

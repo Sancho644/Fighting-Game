@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Audio;
 using Enemy;
+using Hero;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services;
+using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.Randomizer;
 using Logic;
@@ -23,21 +26,25 @@ namespace Infrastructure.Factory
         private readonly IRandomService _randomService;
         private readonly IPersistentProgressService _progressService;
         private readonly IWindowService _windowService;
+        private readonly IInputService _inputService;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
-
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
+        public AudioSettingsComponent SfxSource { get; private set; }
+        public AudioSettingsComponent MusicSource { get; private set; }
+        
         private GameObject HeroGameObject { get; set; }
 
         public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
-            IPersistentProgressService progressService, IWindowService windowService)
+            IPersistentProgressService progressService, IWindowService windowService, IInputService inputService)
         {
             _assets = assets;
             _staticData = staticData;
             _randomService = randomService;
             _progressService = progressService;
             _windowService = windowService;
+            _inputService = inputService;
         }
 
         public async Task WarmUp()
@@ -49,6 +56,15 @@ namespace Infrastructure.Factory
         public async Task<GameObject> CreateHero(Vector3 at)
         {
             HeroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
+            
+            HeroAttack heroAttack = HeroGameObject.GetComponent<HeroAttack>();
+            heroAttack.Construct(_inputService, _randomService);
+
+            HeroMove heroMove = HeroGameObject.GetComponent<HeroMove>();
+            heroMove.Construct(_inputService);
+
+            PlaySoundsComponent soundsComponent = HeroGameObject.GetComponent<PlaySoundsComponent>();
+            soundsComponent.Construct(SfxSource.Source);
 
             return HeroGameObject;
         }
@@ -115,6 +131,15 @@ namespace Infrastructure.Factory
             spawner.EnemyTypeId = enemyTypeId;
         }
 
+        public async Task CreateAudioSources()
+        {
+            GameObject sfxPrefab = await _assets.Load<GameObject>(AssetAddress.SfxAudioSource);
+            GameObject musicPrefab = await _assets.Load<GameObject>(AssetAddress.MusicAudioSource);
+
+            SfxSource = InstantiateRegistered(sfxPrefab).GetComponent<AudioSettingsComponent>();
+            MusicSource = InstantiateRegistered(musicPrefab).GetComponent<AudioSettingsComponent>();
+        }
+
         public void CleanUp()
         {
             ProgressReaders.Clear();
@@ -148,8 +173,7 @@ namespace Infrastructure.Factory
         {
             GameObject gameObject = Object.Instantiate(prefab);
             RegisterProgressWatchers(gameObject);
-            return gameObject;
-        }
+            return gameObject; }
 
         private void RegisterProgressWatchers(GameObject gameObject)
         {

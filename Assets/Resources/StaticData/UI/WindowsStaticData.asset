@@ -23,3 +23,11 @@ MonoBehaviour:
     Prefab: {fileID: 2645803151509989030, guid: bec8be891dae7124a81e12d2f207cc4d, type: 3}
   - WindowId: 3
     Prefab: {fileID: 6952958166262833042, guid: 1d297d4161d6e9b46985e268e200dee3, type: 3}
+  - WindowId: 6
+    Prefab: {fileID: 7654392872175630330, guid: 28fb33d88c7fc9248821a1a8f20f7f58, type: 3}
+  - WindowId: 9
+    Prefab: {fileID: 1464267618072692352, guid: 439052dfb991e9d4dbb03f098bd5ca80, type: 3}
+  - WindowId: 8
+    Prefab: {fileID: 5254468987753412793, guid: 192b081ac56a47a459f9d37709e3e587, type: 3}
+  - WindowId: 7
+    Prefab: {fileID: 5920509952485467661, guid: 2773ab5c16200d243bc4fdb33b0e8782, type: 3}

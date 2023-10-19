@@ -1,7 +1,11 @@
-﻿using Infrastructure;
+﻿using Data;
+using Infrastructure;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.PersistentProgress.SaveLoad;
+using Logic;
+using UI.Services.Factory;
+using UI.Services.Windows;
 using UnityEngine;
 
 namespace UI.Windows.MainMenu
@@ -17,17 +21,25 @@ namespace UI.Windows.MainMenu
         private SceneLoader _sceneLoader;
         private MainMenuWindow _mainMainMenu;
         private IInitGameWorldService _initGameWorldService;
+        private LoadingCurtain _curtain;
+        private IWindowService _windowService;
+        private IUIFactory _uiFactory;
 
-        public void Construct(MainMenuWindow mainMenuWindow, IPersistentProgressService progressService, ISaveLoadService saveLoadService, SceneLoader sceneLoader, IInitGameWorldService initGameWorldService)
+        public void Construct(MainMenuWindow mainMenuWindow, IPersistentProgressService progressService,
+            ISaveLoadService saveLoadService, SceneLoader sceneLoader, IInitGameWorldService initGameWorldService,
+            LoadingCurtain curtain, IWindowService windowService, IUIFactory uiFactory)
         {
             _mainMainMenu = mainMenuWindow;
             _progressService = progressService;
             _saveLoadService = saveLoadService;
             _sceneLoader = sceneLoader;
             _initGameWorldService = initGameWorldService;
+            _curtain = curtain;
+            _windowService = windowService;
+            _uiFactory = uiFactory;
         }
 
-        private void Start()
+        protected override void Initialize()
         {
             InitButtons();
         }
@@ -38,7 +50,7 @@ namespace UI.Windows.MainMenu
             _mainMainMenu.SetSettingsButtonCallBack(OnSettings);
             _mainMainMenu.SetExitButtonCallBack(OnExit);
 
-            var progress = _saveLoadService.LoadProgress();
+            PlayerProgress progress = _saveLoadService.LoadProgress();
             if (progress != null)
                 _mainMainMenu.SetContinueButtonCallBack(OnContinue);
         }
@@ -46,18 +58,21 @@ namespace UI.Windows.MainMenu
         private void OnStart()
         {
             _sceneLoader.Load(LevelOne, OnLoaded);
+            _curtain.Show();
             _progressService.Progress = _initGameWorldService.NewProgress();
         }
 
-        private void OnContinue()
+        private async void OnContinue()
         {
             _sceneLoader.Load(_progressService.Progress.WorldData.PositionOnLevel.Level, OnLoaded);
             _progressService.Progress = _initGameWorldService.LoadProgress();
+            await _uiFactory.CreateUIRoot();
+            _curtain.Show();
         }
 
         private void OnSettings()
         {
-            Debug.Log("OnSetting");
+            _windowService.Open(WindowId.SettingsWindowController);
         }
 
         private void OnExit()
@@ -73,6 +88,8 @@ namespace UI.Windows.MainMenu
         {
             await _initGameWorldService.InitGameWorld();
             _initGameWorldService.InformProgressReaders();
+            await _uiFactory.CreateUIRoot();
+            _curtain.Hide();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Data;
-using Infrastructure.Services;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
@@ -14,10 +13,10 @@ namespace Hero
 
         private IInputService _inputService;
         private Camera _camera;
-
-        private void Awake()
+        
+        public void Construct(IInputService inputService)
         {
-            _inputService = AllServices.Container.Single<IInputService>();
+            _inputService = inputService;
         }
 
         private void Start()
@@ -27,6 +26,9 @@ namespace Hero
 
         private void Update()
         {
+            if (_inputService == null)
+                return;
+            
             Vector3 movementVector = Vector3.zero;
 
             if (_inputService.Axis.sqrMagnitude > Constants.Epsilon)

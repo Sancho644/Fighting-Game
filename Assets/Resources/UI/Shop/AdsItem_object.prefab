@@ -51,11 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab0accab669412dac1ff06111dcf11d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowAdButton: {fileID: 7242566619460607967}
-  AdActiveObjects:
-  - {fileID: 7242566619460607962}
+  _showAdButton: {fileID: 7242566619460607967}
+  _adActiveObjects:
   - {fileID: 7242566618950786536}
-  AdInactiveObjects:
+  - {fileID: 7242566619460607962}
+  _adInactiveObjects:
   - {fileID: 8759754427798348549}
 --- !u!1 &7242566618666783950
 GameObject:

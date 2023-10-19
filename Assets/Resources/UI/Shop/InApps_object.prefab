@@ -463,6 +463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a38e2ab2f2b4730a924625b0c225ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShopUnavailableObjects:
+  _shopUnavailableObjects:
   - {fileID: 470278883119904612}
-  Parent: {fileID: 290634241986157650}
+  _parent: {fileID: 290634241986157650}

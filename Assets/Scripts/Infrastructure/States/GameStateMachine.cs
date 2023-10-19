@@ -6,6 +6,7 @@ using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.PersistentProgress.SaveLoad;
 using Logic;
 using UI.Services.Factory;
+using UI.Services.Windows;
 
 namespace Infrastructure.States
 {
@@ -19,7 +20,7 @@ namespace Infrastructure.States
             _states = new Dictionary<Type, IExitableState>()
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
-                [typeof(LoadLevelState)] = new LoadLevelState(sceneLoader, curtain, services.Single<IGameFactory>(), services.Single<IUIFactory>(), services.Single<ISaveLoadService>()),
+                [typeof(LoadLevelState)] = new LoadLevelState(sceneLoader, curtain, services.Single<IGameFactory>(), services.Single<IUIFactory>(), services.Single<ISaveLoadService>(), services.Single<IWindowService>(), services.Single<IPersistentProgressService>()),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
             };
         }

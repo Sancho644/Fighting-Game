@@ -35,8 +35,8 @@ namespace UI.Windows.Shop
 
         protected override void Initialize()
         {
-            _adItem.Initialize();
-            _shopItems.Initialize();
+            _adItem.InitializeReward();
+            _shopItems.InitializeItems();
             
             RefreshMoneyText();
         }
@@ -52,8 +52,8 @@ namespace UI.Windows.Shop
         {
             base.Cleanup();
             
-            _adItem.Cleanup();
-            _shopItems.Cleanup();
+            _adItem.CleanupReward();
+            _shopItems.CleanupItems();
             
             Progress.WorldData.LootData.Changed -= RefreshMoneyText;
         }

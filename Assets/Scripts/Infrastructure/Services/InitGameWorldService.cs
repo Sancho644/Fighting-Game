@@ -60,6 +60,9 @@ namespace Infrastructure.Services
             progress.HeroStats.DamageRadius = 0.5f;
             progress.HeroState.ResetHp();
 
+            progress.AudioData.MusicValue = _progressService.Progress.AudioData.MusicValue;
+            progress.AudioData.SfxValue = _progressService.Progress.AudioData.SfxValue;
+
             return progress;
         }
 

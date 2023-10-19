@@ -18,8 +18,10 @@ namespace UI.Services.Windows
                 case WindowId.Unknown:
                     break;
                 case WindowId.ShopWindow:
-                    _uiFactory.CreateUIRoot();
                     _uiFactory.CreateShop();
+                    break;
+                case WindowId.SettingsWindowController:
+                    _uiFactory.CreateSettings();
                     break;
             }
         }

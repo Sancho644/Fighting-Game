@@ -61,6 +61,14 @@ MonoBehaviour:
     m_Address: iap_icon_18
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: c6b75efdb9de22342856f8ba9b23c4f6
+    m_Address: SfxAudioSource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f98dabb39205e0544a329ad0be22575e
+    m_Address: MusicAudioSource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 6513c731f4ee08047a990e54818c5550, type: 2}
   m_SchemaSet:

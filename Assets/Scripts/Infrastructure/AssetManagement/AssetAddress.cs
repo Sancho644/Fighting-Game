@@ -6,5 +6,7 @@
         public const string HudPath = "Hud";
         public const string Loot = "BaseLoot";
         public const string Spawner = "SpawnPoint";
+        public const string SfxAudioSource = "SfxAudioSource";
+        public const string MusicAudioSource = "MusicAudioSource";
     }
 }

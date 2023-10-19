@@ -1,7 +1,9 @@
-﻿using Data;
-using Infrastructure.Services;
+﻿using System.Collections.Generic;
+using Audio;
+using Data;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
+using Infrastructure.Services.Randomizer;
 using Logic;
 using UnityEngine;
 
@@ -14,22 +16,36 @@ namespace Hero
 
         [SerializeField] private HeroAnimator _animator;
         [SerializeField] private CharacterController _characterController;
+        [SerializeField] private PlaySoundsComponent _playSounds;
 
         private IInputService _input;
-        private static int _layerMask;
+        private IRandomService _randomService;
+
+        private Stats _stats;
+
+        private int _layerMask;
         private float _radius;
         private Collider[] _hits = new Collider[1];
-        private Stats _stats;
+        private List<AudioClip> _punchSoundsList = new List<AudioClip>();
+
+        public void Construct(IInputService input, IRandomService randomService)
+        {
+            _input = input;
+            _randomService = randomService;
+        }
 
         private void Awake()
         {
-            _input = AllServices.Container.Single<IInputService>();
-
             _layerMask = 1 << LayerMask.NameToLayer(HittableTag);
+            
+            AddPunchAudioClips();
         }
 
         private void Update()
         {
+            if (_input == null)
+                return;
+            
             if (_input.IsAttackButtonUp() && !_animator.IsAttacking)
                 _animator.PlayAttack();
         }
@@ -39,7 +55,13 @@ namespace Hero
             for (int i = 0; i < Hit(); i++)
             {
                 _hits[i].transform.parent.GetComponent<IHealth>().TakeDamage(_stats.Damage);
+
+                _playSounds.PlayOneShot(RandomizePunchClip());
+                
+                return;
             }
+            
+            _playSounds.Play(ClipId.Hit);
         }
 
         private void OnAttackEnded()
@@ -49,6 +71,22 @@ namespace Hero
         public void LoadProgress(PlayerProgress progress)
         {
             _stats = progress.HeroStats;
+        }
+
+        private AudioClip RandomizePunchClip()
+        {
+            return _punchSoundsList[_randomService.Next(0, _punchSoundsList.Count)];
+        }
+
+        private void AddPunchAudioClips()
+        {
+            foreach (ClipData clipData in _playSounds.Sounds)
+            {
+                if (clipData.Id == ClipId.Punch)
+                {
+                    _punchSoundsList.Add(clipData.Clip);
+                }
+            }
         }
 
         private int Hit() =>
