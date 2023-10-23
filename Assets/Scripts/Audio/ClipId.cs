@@ -6,5 +6,6 @@ namespace Audio
         Punch = 1,
         Hit = 2,
         Hurt = 3,
+        Finisher = 4,
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure.Services.PersistentProgress;
 using Logic;
 using TMPro;
 using UnityEngine;
+using Utils.ObjectPool;
 
 namespace Enemy
 {
@@ -12,6 +13,7 @@ namespace Enemy
         [SerializeField] private GameObject _lootPrefab;
         [SerializeField] private GameObject _pickupFxPrefab;
         [SerializeField] private GameObject _pickupPopup;
+        [SerializeField] private UniqueId _uniqueId;
         [SerializeField] private TextMeshPro _lootText;
         [SerializeField] private float _destroyCooldown;
 
@@ -30,8 +32,10 @@ namespace Enemy
             _loot = loot;
         }
 
-        private void Start() =>
-            _id = GetComponent<UniqueId>().Id;
+        private void Start()
+        {
+            _id = _uniqueId.Id;
+        }
 
         public void UpdateProgress(PlayerProgress progress)
         {
@@ -93,12 +97,14 @@ namespace Enemy
             Destroy(gameObject);
         }
 
-        private void PlayPickupFx() =>
-            Instantiate(_pickupFxPrefab, transform.position, Quaternion.identity);
+        private void PlayPickupFx()
+        {
+            Pool.Instance.Get(_pickupFxPrefab, transform.position);
+        }
 
         private void ShowText()
         {
-            _lootText.text = $"{_loot.Value}";
+            _lootText.text = _loot.Value.ToString();
             _pickupPopup.SetActive(true);
         }
     }

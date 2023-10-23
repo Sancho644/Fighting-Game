@@ -65,6 +65,7 @@ MonoBehaviour:
   _lootPrefab: {fileID: 843895604217101054}
   _pickupFxPrefab: {fileID: 100004, guid: fb7b0526ade434043b350a180d741cf3, type: 3}
   _pickupPopup: {fileID: 7332324217289404225}
+  _uniqueId: {fileID: -6372547191151180800}
   _lootText: {fileID: 3678660235286979688}
   _destroyCooldown: 1.5
 --- !u!114 &-6372547191151180800

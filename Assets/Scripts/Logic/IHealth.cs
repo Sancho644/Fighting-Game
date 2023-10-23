@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructure.Services.Randomizer;
 
 namespace Logic
 {
@@ -8,5 +9,6 @@ namespace Logic
         float Current { get; set; }
         float Max { get; set; }
         void TakeDamage(float damage);
+        void Construct(IRandomService randomService);
     }
 }

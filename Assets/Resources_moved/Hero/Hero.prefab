@@ -1113,6 +1113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heroAnimator: {fileID: 2724875660564263810}
+  _playSounds: {fileID: 3866234891729174711}
 --- !u!114 &4041088098889829371
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ namespace Infrastructure.Factory
 
         public AudioSettingsComponent SfxSource { get; private set; }
         public AudioSettingsComponent MusicSource { get; private set; }
-        
+
         private GameObject HeroGameObject { get; set; }
 
         public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
@@ -56,15 +56,11 @@ namespace Infrastructure.Factory
         public async Task<GameObject> CreateHero(Vector3 at)
         {
             HeroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
-            
-            HeroAttack heroAttack = HeroGameObject.GetComponent<HeroAttack>();
-            heroAttack.Construct(_inputService, _randomService);
 
-            HeroMove heroMove = HeroGameObject.GetComponent<HeroMove>();
-            heroMove.Construct(_inputService);
-
-            PlaySoundsComponent soundsComponent = HeroGameObject.GetComponent<PlaySoundsComponent>();
-            soundsComponent.Construct(SfxSource.Source);
+            HeroGameObject.GetComponent<PlaySoundsComponent>().Construct(SfxSource.Source);
+            HeroGameObject.GetComponent<IHealth>().Construct(_randomService);
+            HeroGameObject.GetComponent<HeroAttack>().Construct(_inputService);
+            HeroGameObject.GetComponent<HeroMove>().Construct(_inputService);
 
             return HeroGameObject;
         }
@@ -88,10 +84,14 @@ namespace Infrastructure.Factory
             GameObject prefab = await _assets.Load<GameObject>(enemyData.PrefabReference);
             GameObject enemy = Object.Instantiate(prefab, parent.position, Quaternion.identity, parent);
 
+            enemy.GetComponent<PlaySoundsComponent>().Construct(SfxSource.Source);
+
             IHealth health = enemy.GetComponent<IHealth>();
+            health.Construct(_randomService);
             health.Current = enemyData.Hp;
             health.Max = enemyData.Hp;
 
+            enemy.GetComponent<EnemyDeath>().Construct(_randomService);
             enemy.GetComponent<ActorUI>().Construct(health);
             enemy.GetComponent<AgentMoveToPlayer>().Construct(HeroGameObject.transform);
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MoveSpeed;
@@ -113,7 +113,7 @@ namespace Infrastructure.Factory
         {
             GameObject prefab = await _assets.Load<GameObject>(AssetAddress.Loot);
             LootPiece lootPiece = InstantiateRegistered(prefab).GetComponent<LootPiece>();
-            
+
             lootPiece.Construct(_progressService.Progress.WorldData);
 
             return lootPiece;
@@ -122,7 +122,7 @@ namespace Infrastructure.Factory
         public async Task CreateSpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {
             GameObject prefab = await _assets.Load<GameObject>(AssetAddress.Spawner);
-            
+
             SpawnPoint spawner = InstantiateRegistered(prefab, at)
                 .GetComponent<SpawnPoint>();
 
@@ -144,7 +144,7 @@ namespace Infrastructure.Factory
         {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
-            
+
             _assets.CleanUp();
         }
 
@@ -173,7 +173,8 @@ namespace Infrastructure.Factory
         {
             GameObject gameObject = Object.Instantiate(prefab);
             RegisterProgressWatchers(gameObject);
-            return gameObject; }
+            return gameObject;
+        }
 
         private void RegisterProgressWatchers(GameObject gameObject)
         {
