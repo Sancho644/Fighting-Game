@@ -1,5 +1,4 @@
-﻿using System;
-using Audio;
+﻿using Audio;
 using Data;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
@@ -52,15 +51,23 @@ namespace Hero
         {
             for (int i = 0; i < Hit(); i++)
             {
-                if (_hits[i].transform.parent.TryGetComponent<IHealth>(out var health))
+                if (TryGetHealth(i, out var health))
                 {
                     health.TakeDamage(_stats.Damage);
-                    
-                    return;
                 }
             }
+        }
 
-            _playSounds.Play(ClipId.Hit);
+        private void OnHit()
+        {
+            for (int i = 0; i < Hit(); i++)
+            {
+                if (!TryGetHealth(i, out var health))
+                {
+                    _playSounds.Play(ClipId.Hit);
+                    Debug.Log("tut");
+                }
+            }
         }
 
         private void OnAttackEnded()
@@ -70,6 +77,11 @@ namespace Hero
         public void LoadProgress(PlayerProgress progress)
         {
             _stats = progress.HeroStats;
+        }
+
+        private bool TryGetHealth(int i, out IHealth health)
+        {
+            return _hits[i].transform.parent.TryGetComponent<IHealth>(out health);
         }
 
         private int Hit() =>
